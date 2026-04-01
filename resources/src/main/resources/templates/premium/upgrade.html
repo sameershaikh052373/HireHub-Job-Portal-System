@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Upgrade to Premium - Job Portal</title>
+</head>
+<body>
+<div th:fragment="content">
+    <!-- Show only if user is NOT premium and NOT admin -->
+    <div th:if="${user.userType.name() != 'ADMIN' and !isPremiumActive}">
+        <div class="container">
+            <h2 class="text-center mb-4">Upgrade to Premium</h2>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h4>Premium Benefits</h4>
+
+                            <!-- JOB SEEKER content -->
+                            <div th:if="${user.userType.name() == 'JOB_SEEKER'}">
+                                <p>✓ Apply to unlimited jobs (currently limited to 5)</p>
+                                <p>✓ Email notifications for new jobs</p>
+                                <p>✓ Resume visibility boost</p>
+                            </div>
+
+                            <!-- EMPLOYER content -->
+                            <div th:if="${user.userType.name() == 'EMPLOYER'}">
+                                <p>✓ Post unlimited jobs (currently limited to 3)</p>
+                                <p>✓ Featured job listings</p>
+                                <p>✓ Advanced candidate search</p>
+                            </div>
+                            
+                            <h3 class="text-primary">₹499/month</h3>
+                            
+                            <button id="rzp-button1" class="btn btn-primary btn-lg">
+                                Upgrade Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+            document.getElementById('rzp-button1').onclick = function(e){
+                // Create order first
+                fetch('/premium/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'amount=499'
+                })
+                .then(response => response.text())
+                .then(data => {
+                    const order = JSON.parse(data);
+                    
+                    var options = {
+                        "key": "[[${razorpayKeyId}]]",
+                        "amount": order.amount,
+                        "currency": "INR",
+                        "name": "Job Portal Premium",
+                        "description": "Premium Account Upgrade",
+                        "order_id": order.id,
+                        "handler": function (response){
+                            // Submit form to verify payment
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = '/premium/verify-payment';
+                            
+                            const fields = {
+                                'razorpay_order_id': response.razorpay_order_id,
+                                'razorpay_payment_id': response.razorpay_payment_id,
+                                'razorpay_signature': response.razorpay_signature
+                            };
+                            
+                            for(const key in fields) {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = key;
+                                input.value = fields[key];
+                                form.appendChild(input);
+                            }
+                            
+                            document.body.appendChild(form);
+                            form.submit();
+                        },
+                        "prefill": {
+                            "name": "[[${user.firstName}]] [[${user.lastName}]]",
+                            "email": "[[${user.email}]]"
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.open();
+                });
+                e.preventDefault();
+            }
+        </script>
+    </div>
+
+    <!-- Show message to premium users -->
+    <div th:if="${isPremiumActive}">
+        <div class="container text-center mt-5">
+            <div class="alert alert-success">
+                <h3>You're Already Premium!</h3>
+                <p>Your premium account is active until <span th:text="${#temporals.format(user.premiumExpiresAt, 'dd MMM yyyy')}"></span></p>
+                <a th:href="@{/dashboard}" class="btn btn-primary">Go to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show message to admin -->
+    <div th:if="${user.userType.name() == 'ADMIN'}">
+        <div class="container text-center mt-5">
+            <h3 class="text-danger">Access Denied</h3>
+            <p>Admins are not allowed to upgrade to premium.</p>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

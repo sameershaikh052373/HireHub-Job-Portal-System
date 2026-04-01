@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>About - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="text-center mb-5">
+            <h2>About Job Portal</h2>
+            <p class="lead">Connecting talent with opportunity</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <img src="https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Team collaboration" class="img-fluid rounded shadow">
+            </div>
+            <div class="col-md-6">
+                <h3>Our Mission</h3>
+                <p>At Job Portal, our mission is to bridge the gap between talented individuals and companies seeking their skills. We believe that the right job can transform a person's life, and the right talent can transform a business.</p>
+                <p>We've built a platform that simplifies the job search and recruitment process, making it easier for job seekers to find meaningful careers and for employers to build exceptional teams.</p>
+                
+                <h3 class="mt-4">Our Values</h3>
+                <ul>
+                    <li><strong>Transparency:</strong> We believe in honest communication and clear processes for both job seekers and employers.</li>
+                    <li><strong>Quality:</strong> We focus on quality matches rather than quantity, ensuring that job seekers find relevant opportunities.</li>
+                    <li><strong>Innovation:</strong> We continuously improve our platform to meet the evolving needs of the job market.</li>
+                    <li><strong>Inclusivity:</strong> We strive to create an environment where all job seekers have equal access to opportunities.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">Why Choose Us</h3>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                                <h4>Smart Job Matching</h4>
+                                <p>Our advanced algorithms match job seekers with relevant opportunities based on their skills, experience, and preferences.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-building fa-3x text-primary mb-3"></i>
+                                <h4>Top Employers</h4>
+                                <p>We partner with leading companies across industries, providing access to quality job opportunities at reputable organizations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-tools fa-3x text-primary mb-3"></i>
+                                <h4>Powerful Tools</h4>
+                                <p>We offer comprehensive tools for resume building, application tracking, and career development to support your job search journey.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">Our Team</h3>
+                <div class="row">
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100">
+                            <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Team Member" class="card-img-top">
+                            <div class="card-body text-center">
+                                <h5>John Doe</h5>
+                                <p class="text-muted">CEO & Founder</p>
+                                <p>With over 15 years of experience in recruitment and HR technology.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100">
+                            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Team Member" class="card-img-top">
+                            <div class="card-body text-center">
+                                <h5>Jane Smith</h5>
+                                <p class="text-muted">Head of Operations</p>
+                                <p>Specializes in streamlining processes and enhancing user experience.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Team Member" class="card-img-top">
+                            <div class="card-body text-center">
+                                <h5>Robert Johnson</h5>
+                                <p class="text-muted">CTO</p>
+                                <p>Leads our technical team in building innovative recruitment solutions.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100">
+                            <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Team Member" class="card-img-top">
+                            <div class="card-body text-center">
+                                <h5>Emily Brown</h5>
+                                <p class="text-muted">Head of Customer Success</p>
+                                <p>Ensures both employers and job seekers achieve their goals on our platform.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+</body>
+</html>

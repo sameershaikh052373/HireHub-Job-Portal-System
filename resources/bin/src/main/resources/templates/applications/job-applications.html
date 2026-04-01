@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Job Applications - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Applications for <span th:text="${job.title}">Job Title</span></h2>
+            <a th:href="@{/employer/jobs}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-1"></i> Back to Jobs
+            </a>
+        </div>
+        
+        <!-- Job Info Summary -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="card-title" th:text="${job.title}">Job Title</h5>
+                        <p class="mb-1">
+                            <i class="fas fa-map-marker-alt me-1"></i> <span th:text="${job.location}">Location</span>
+                            <span class="ms-3" th:if="${job.salary}">
+                                <i class="fas fa-money-bill-wave me-1"></i> <span th:text="${job.salary}">Salary</span>
+                            </span>
+                        </p>
+                        <p class="mb-0">
+                            <span th:switch="${job.jobType.name()}">
+                                <span th:case="'FULL_TIME'" class="badge bg-primary">Full Time</span>
+                                <span th:case="'PART_TIME'" class="badge bg-success">Part Time</span>
+                                <span th:case="'CONTRACT'" class="badge bg-warning">Contract</span>
+                                <span th:case="'INTERNSHIP'" class="badge bg-info">Internship</span>
+                                <span th:case="'REMOTE'" class="badge bg-secondary">Remote</span>
+                            </span>
+                            <span th:switch="${job.status.name()}" class="ms-2">
+                                <span th:case="'ACTIVE'" class="badge bg-success">Active</span>
+                                <span th:case="'CLOSED'" class="badge bg-danger">Closed</span>
+                                <span th:case="'DRAFT'" class="badge bg-warning">Draft</span>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <p class="mb-1">
+                            <i class="far fa-calendar-alt me-1"></i> Posted: 
+                            <span th:text="${#temporals.format(job.createdAt, 'dd MMM yyyy')}">Date</span>
+                        </p>
+                        <p class="mb-0">
+                            <i class="fas fa-users me-1"></i> Total Applications: 
+                            <span th:text="${applications.size()}">0</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Applications Filter -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form class="row g-3">
+                    <div class="col-md-4">
+                        <label for="statusFilter" class="form-label">Filter by Status</label>
+                        <select id="statusFilter" class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="APPLIED">Applied</option>
+                            <option value="REVIEWING">Reviewing</option>
+                            <option value="SHORTLISTED">Shortlisted</option>
+                            <option value="INTERVIEWED">Interviewed</option>
+                            <option value="REJECTED">Rejected</option>
+                            <option value="OFFERED">Offered</option>
+                            <option value="HIRED">Hired</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="dateFilter" class="form-label">Sort by Date</label>
+                        <select id="dateFilter" class="form-select">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="searchInput" class="form-label">Search</label>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search by name">
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Applications List -->
+        <div class="card">
+            <div class="card-body">
+                <div th:if="${#lists.isEmpty(applications)}" class="text-center py-5">
+                    <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                    <p>No applications have been submitted for this job yet.</p>
+                </div>
+                
+                <div th:unless="${#lists.isEmpty(applications)}" class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Applicant</th>
+                                <th>Applied On</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="application : ${applications}">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://via.placeholder.com/40" alt="Profile Image" class="rounded-circle me-2" width="40">
+                                        <div>
+                                            <div th:text="${application.applicant.firstName + ' ' + application.applicant.lastName}">Applicant Name</div>
+                                            <small class="text-muted" th:text="${application.applicant.email}">email@example.com</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td th:text="${#temporals.format(application.createdAt, 'dd MMM yyyy')}">Date</td>
+                                <td>
+                                    <span th:switch="${application.status.name()}">
+                                        <span th:case="'APPLIED'" class="badge bg-info">Applied</span>
+                                        <span th:case="'REVIEWING'" class="badge bg-primary">Reviewing</span>
+                                        <span th:case="'SHORTLISTED'" class="badge bg-warning">Shortlisted</span>
+                                        <span th:case="'INTERVIEWED'" class="badge bg-secondary">Interviewed</span>
+                                        <span th:case="'REJECTED'" class="badge bg-danger">Rejected</span>
+                                        <span th:case="'OFFERED'" class="badge bg-success">Offered</span>
+                                        <span th:case="'HIRED'" class="badge bg-success">Hired</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a th:href="@{/employer/applications/{id}(id=${application.id})}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                            Update Status
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <form th:action="@{/employer/applications/{id}/update-status(id=${application.id})}" method="post">
+                                                    <input type="hidden" name="status" value="REVIEWING">
+                                                    <button type="submit" class="dropdown-item">Reviewing</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form th:action="@{/employer/applications/{id}/update-status(id=${application.id})}" method="post">
+                                                    <input type="hidden" name="status" value="SHORTLISTED">
+                                                    <button type="submit" class="dropdown-item">Shortlist</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form th:action="@{/employer/applications/{id}/update-status(id=${application.id})}" method="post">
+                                                    <input type="hidden" name="status" value="INTERVIEWED">
+                                                    <button type="submit" class="dropdown-item">Interviewed</button>
+                                                </form>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <form th:action="@{/employer/applications/{id}/update-status(id=${application.id})}" method="post">
+                                                    <input type="hidden" name="status" value="OFFERED">
+                                                    <button type="submit" class="dropdown-item text-success">Offer Job</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form th:action="@{/employer/applications/{id}/update-status(id=${application.id})}" method="post">
+                                                    <input type="hidden" name="status" value="REJECTED">
+                                                    <button type="submit" class="dropdown-item text-danger">Reject</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Application status script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Status filter functionality
+                const statusFilter = document.getElementById('statusFilter');
+                const dateFilter = document.getElementById('dateFilter');
+                const searchInput = document.getElementById('searchInput');
+                
+                // Filter applications
+                function filterApplications() {
+                    const status = statusFilter.value;
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const rows = document.querySelectorAll('tbody tr');
+                    
+                    rows.forEach(row => {
+                        let showRow = true;
+                        
+                        // Filter by status
+                        if (status !== '') {
+                            const rowStatus = row.querySelector('td:nth-child(3) .badge').textContent;
+                            if (!rowStatus.toUpperCase().includes(status)) {
+                                showRow = false;
+                            }
+                        }
+                        
+                        // Filter by search term
+                        if (searchTerm !== '') {
+                            const applicantInfo = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                            if (!applicantInfo.includes(searchTerm)) {
+                                showRow = false;
+                            }
+                        }
+                        
+                        // Show/hide row
+                        row.style.display = showRow ? '' : 'none';
+                    });
+                }
+                
+                // Sort applications by date
+                function sortApplications() {
+                    const sortOrder = dateFilter.value;
+                    const tbody = document.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    
+                    rows.sort((a, b) => {
+                        const dateA = new Date(a.querySelector('td:nth-child(2)').textContent);
+                        const dateB = new Date(b.querySelector('td:nth-child(2)').textContent);
+                        
+                        return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+                    });
+                    
+                    // Clear and append sorted rows
+                    rows.forEach(row => tbody.appendChild(row));
+                }
+                
+                // Event listeners
+                statusFilter.addEventListener('change', filterApplications);
+                searchInput.addEventListener('keyup', filterApplications);
+                dateFilter.addEventListener('change', sortApplications);
+            });
+        </script>
+    </div>
+</body>
+</html>

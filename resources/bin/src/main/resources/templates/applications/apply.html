@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Apply for Job - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <h2 class="mb-4">Apply for Job</h2>
+                        
+                        <div class="alert alert-info mb-4">
+                            <h5>Job Details</h5>
+                            <p class="mb-1">
+                                <strong>Title:</strong> <span th:text="${job.title}">Job Title</span>
+                            </p>
+                            <p class="mb-1">
+                                <strong>Company:</strong> <span th:text="${job.employer.companyName}">Company Name</span>
+                            </p>
+                            <p class="mb-0">
+                                <strong>Location:</strong> <span th:text="${job.location}">Location</span>
+                            </p>
+                        </div>
+                        
+                        <form id="application-form" th:action="@{/jobs/{id}/apply(id=${job.id})}" th:object="${application}" method="post" enctype="multipart/form-data" class="row g-3">
+                            <div class="col-12">
+                                <label for="coverLetter" class="form-label">Cover Letter</label>
+                                <textarea th:field="*{coverLetter}" class="form-control" id="coverLetter" rows="6" required></textarea>
+                                <div id="coverLetterHelp" class="form-text">
+                                    Introduce yourself and explain why you're a good fit for this position.
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="resumeFile" class="form-label">Resume/CV</label>
+                                <input type="file" name="resumeFile" id="resumeFile" class="form-control" accept=".pdf,.doc,.docx" required>
+                                <div id="resumeFileHelp" class="form-text">
+                                    Upload your resume in PDF, DOC, or DOCX format (max 2MB).
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mt-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="confirmInfo" required>
+                                    <label class="form-check-label" for="confirmInfo">
+                                        I confirm that all the information provided is accurate and complete.
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mt-4">
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <a th:href="@{/jobs/{id}(id=${job.id})}" class="btn btn-outline-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

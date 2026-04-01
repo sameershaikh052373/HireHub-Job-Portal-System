@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Job Seeker Dashboard - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <div th:if="${user.profileImage}" class="me-3">
+                            <img th:src="${user.profileImage}" alt="Profile" class="profile-image-large">
+                        </div>
+                        <div th:unless="${user.profileImage}" class="me-3">
+                            <div class="profile-image-large default-avatar" th:text="${user.firstName.substring(0,1) + user.lastName.substring(0,1)}">UN</div>
+                        </div>
+                        <div>
+                            <h2 class="mb-1">Welcome, <span th:text="${user.firstName + ' ' + user.lastName}">User</span>!</h2>
+                            <p class="text-muted mb-0">Track your applications and discover opportunities</p>
+                        </div>
+                    </div>
+                    <div>
+                        <a th:href="@{/jobs}" class="btn btn-primary me-2">
+                            <i class="fas fa-magnifying-glass"></i> Browse Jobs
+                        </a>
+                        <a th:href="@{/profile}" class="btn btn-outline-secondary">
+                            <i class="fas fa-user-circle"></i> Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Application Limit Alert -->
+        <div class="row mb-3" th:unless="${isPremiumActive}">
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <strong>Free Account:</strong> 
+                    <span th:text="${user.jobsAppliedCount ?: 0}">0</span>/5 job applications used.
+                    <a th:href="@{/premium/upgrade}" class="btn btn-sm btn-warning ms-2">Upgrade to Premium</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Application Limit Warning -->
+        <div class="row mb-3" th:if="${user.jobsAppliedCount != null and user.jobsAppliedCount >= 5 and !isPremiumActive}">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <h5>Application Limit Reached!</h5>
+                    <p>You've used all 5 free job applications. Upgrade to Premium for unlimited applications!</p>
+                    <a th:href="@{/premium/upgrade}" class="btn btn-warning">Upgrade Now - ₹499/month</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="dashboard-card dashboard-card-primary">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3>Applications</h3>
+                            <p>
+                                <span th:text="${applications != null ? applications.size() : 0}">0</span>
+                                <span th:unless="${user.isPremium}">/5</span>
+                            </p>
+                        </div>
+                        <i class="fas fa-file-lines fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="dashboard-card dashboard-card-success">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3>Interviews</h3>
+                            <p th:text="${applications != null ? #lists.size(applications.?[status.name() == 'INTERVIEWED']) : 0}">0</p>
+                        </div>
+                        <i class="fas fa-handshake-simple fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="dashboard-card dashboard-card-warning">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3>Offers</h3>
+                            <p th:text="${applications != null ? #lists.size(applications.?[status.name() == 'OFFERED']) : 0}">0</p>
+                        </div>
+                        <i class="fas fa-award fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="dashboard-card dashboard-card-danger">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3>Shortlisted</h3>
+                            <p th:text="${applications != null ? #lists.size(applications.?[status.name() == 'SHORTLISTED']) : 0}">0</p>
+                        </div>
+                        <i class="fas fa-star-half-stroke fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Quick Actions</h5>
+                        <div class="row">
+                            <div class="col-md-3 mb-2">
+                                <a th:href="@{/jobs}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-magnifying-glass me-2"></i>Search Jobs
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <a th:href="@{/jobseeker/applications}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-list-check me-2"></i>My Applications
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <a th:href="@{/profile}" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-user-pen me-2"></i>Update Profile
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <a th:href="@{/premium/upgrade}" class="btn btn-outline-warning w-100">
+                                    <i class="fas fa-crown me-2"></i>Upgrade Premium
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-clock-rotate-left me-2"></i>Recent Applications
+                        </h4>
+                        <a th:href="@{/jobseeker/applications}" class="btn btn-sm btn-outline-primary">
+                            View All
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${applications == null or #lists.isEmpty(applications)}" class="text-center py-4">
+                            <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                            <p class="text-muted mb-3">You haven't applied to any jobs yet.</p>
+                            <a th:href="@{/jobs}" class="btn btn-primary">
+                                <i class="fas fa-magnifying-glass me-2"></i>Browse Jobs
+                            </a>
+                        </div>
+                        
+                        <div th:unless="${applications == null or #lists.isEmpty(applications)}" class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Job Title</th>
+                                        <th>Company</th>
+                                        <th>Applied On</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="app, stat : ${applications}" th:if="${stat.index < 5}">
+                                        <td>
+                                            <div>
+                                                <a th:href="@{/jobs/{id}(id=${app.job.id})}" 
+                                                   th:text="${app.job.title}" 
+                                                   class="text-decoration-none fw-semibold" style="color: var(--primary-color);">Job Title</a>
+                                                <div class="small text-muted" th:text="${app.job.location}">Location</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span th:text="${app.job.employer.companyName ?: 'N/A'}" class="fw-medium">Company Name</span>
+                                        </td>
+                                        <td>
+                                            <span th:text="${#temporals.format(app.createdAt, 'dd MMM yyyy')}">Date</span>
+                                        </td>
+                                        <td>
+                                            <span th:switch="${app.status.name()}">
+                                                <span th:case="'APPLIED'" class="badge status-applied">Applied</span>
+                                                <span th:case="'REVIEWING'" class="badge status-reviewing">Reviewing</span>
+                                                <span th:case="'SHORTLISTED'" class="badge status-shortlisted">Shortlisted</span>
+                                                <span th:case="'INTERVIEWED'" class="badge status-interviewed">Interviewed</span>
+                                                <span th:case="'REJECTED'" class="badge status-rejected">Rejected</span>
+                                                <span th:case="'OFFERED'" class="badge status-offered">Offered</span>
+                                                <span th:case="'HIRED'" class="badge status-hired">Hired</span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/jobs/{id}(id=${app.job.id})}" 
+                                               class="btn btn-sm btn-outline-secondary">
+                                                View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-chart-simple me-2"></i>Application Status
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${applications == null or #lists.isEmpty(applications)}" class="text-center py-3">
+                            <p class="text-muted">No application data available</p>
+                        </div>
+                        
+                        <div th:unless="${applications == null or #lists.isEmpty(applications)}" class="row">
+                            <div class="col-md-2 text-center mb-3">
+                                <div class="border rounded p-3">
+                                    <div class="h4 text-info mb-1" th:text="${#lists.size(applications.?[status.name() == 'APPLIED'])}">0</div>
+                                    <small class="text-muted">Applied</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center mb-3">
+                                <div class="border rounded p-3">
+                                    <div class="h4 text-primary mb-1" th:text="${#lists.size(applications.?[status.name() == 'REVIEWING'])}">0</div>
+                                    <small class="text-muted">Reviewing</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center mb-3">
+                                <div class="border rounded p-3">
+                                    <div class="h4 text-warning mb-1" th:text="${#lists.size(applications.?[status.name() == 'SHORTLISTED'])}">0</div>
+                                    <small class="text-muted">Shortlisted</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center mb-3">
+                                <div class="border rounded p-3">
+                                    <div class="h4 text-secondary mb-1" th:text="${#lists.size(applications.?[status.name() == 'INTERVIEWED'])}">0</div>
+                                    <small class="text-muted">Interviewed</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center mb-3">
+                                <div class="border rounded p-3">
+                                    <div class="h4 text-success mb-1" th:text="${#lists.size(applications.?[status.name() == 'OFFERED'])}">0</div>
+                                    <small class="text-muted">Offered</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center mb-3">
+                                <div class="border rounded p-3">
+                                    <div class="h4 text-danger mb-1" th:text="${#lists.size(applications.?[status.name() == 'REJECTED'])}">0</div>
+                                    <small class="text-muted">Rejected</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Register as Job Seeker - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">Create Job Seeker Account</h2>
+                        
+                        <form th:action="@{/register/jobseeker}" th:object="${user}" method="post" class="row g-3">
+                            
+                            <!-- Personal Information -->
+                            <div class="col-md-6">
+                                <label for="firstName" class="form-label">First Name *</label>
+                                <input type="text" th:field="*{firstName}" th:class="${#fields.hasErrors('firstName')} ? 'form-control is-invalid' : 'form-control'" id="firstName" required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Last Name *</label>
+                                <input type="text" th:field="*{lastName}" th:class="${#fields.hasErrors('lastName')} ? 'form-control is-invalid' : 'form-control'" id="lastName" required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" th:field="*{email}" th:class="${#fields.hasErrors('email') || emailError != null} ? 'form-control is-invalid' : 'form-control'" id="email" required oninput="validateEmail(this)">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                <div class="invalid-feedback" th:if="${emailError != null}" th:text="${emailError}"></div>
+                                <div class="invalid-feedback" id="email-error" style="display: none;">Please enter a valid email address</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="password" class="form-label">Password *</label>
+                                <input type="password" th:field="*{password}" th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'" id="password" required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                <small class="form-text text-muted">Minimum 6 characters</small>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" th:field="*{phone}" th:class="${#fields.hasErrors('phone')} ? 'form-control is-invalid' : 'form-control'" id="phone" placeholder="1234567890" maxlength="10" oninput="validatePhone(this)">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                                <div class="invalid-feedback" id="phone-error" style="display: none;">Phone number must be exactly 10 digits</div>
+                                <small class="form-text text-muted">Exactly 10 digits only</small>
+                            </div>
+                            
+                            <!-- Resume Information -->
+                            <div class="col-12">
+                                <hr>
+                                <h5>Professional Information</h5>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="skills" class="form-label">Skills</label>
+                                <textarea th:field="*{skills}" class="form-control" id="skills" rows="2" placeholder="e.g., Java, Spring Boot, MySQL, HTML, CSS"></textarea>
+                                <div class="form-text">List your key skills, separated by commas</div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="experience" class="form-label">Work Experience</label>
+                                <textarea th:field="*{experience}" class="form-control" id="experience" rows="3"></textarea>
+                                <div class="form-text">Briefly describe your previous work experience</div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="education" class="form-label">Education</label>
+                                <textarea th:field="*{education}" class="form-control" id="education" rows="2"></textarea>
+                                <div class="form-text">List your educational qualifications</div>
+                            </div>
+                            
+                            <div class="col-12 mt-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a> and <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mt-4">
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center mt-4">
+                            <p>Already have an account? <a th:href="@{/login}">Sign In</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Terms Modal -->
+        <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>These Terms and Conditions constitute a legally binding agreement made between you and Job Portal, concerning your access to and use of the website.</p>
+                        <!-- Add more terms content here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Privacy Modal -->
+        <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.</p>
+                        <!-- Add more privacy content here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function validateEmail(input) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const errorDiv = document.getElementById('email-error');
+            
+            if (input.value && !emailRegex.test(input.value)) {
+                input.classList.add('is-invalid');
+                errorDiv.style.display = 'block';
+            } else {
+                input.classList.remove('is-invalid');
+                errorDiv.style.display = 'none';
+            }
+        }
+        
+        function validatePhone(input) {
+            const phoneRegex = /^[0-9]{10}$/;
+            const errorDiv = document.getElementById('phone-error');
+            
+            if (input.value && !phoneRegex.test(input.value)) {
+                input.classList.add('is-invalid');
+                errorDiv.style.display = 'block';
+            } else {
+                input.classList.remove('is-invalid');
+                errorDiv.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

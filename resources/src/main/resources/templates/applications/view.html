@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Job Seeker Details - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Job Seeker Details</h2>
+            <a th:href="@{/employer/jobs/{id}/applications(id=${application.job != null ? application.job.id : 0})}" class="btn btn-outline-primary">
+                Back to Applications
+            </a>
+        </div>
+        
+        <!-- Debug Information (remove in production) -->
+        <div class="alert alert-info">
+            <strong>Debug Info:</strong><br>
+            Application ID: <span th:text="${application.id}">N/A</span><br>
+            Cover Letter: <span th:text="${application.coverLetter != null ? 'Present' : 'Null'}">N/A</span><br>
+            Cover Letter Length: <span th:text="${application.coverLetter != null ? application.coverLetter.length() : 0}">0</span><br>
+            Resume Path: <span th:text="${application.resumePath != null ? application.resumePath : 'Null'}">N/A</span>
+        </div>
+        
+        <!-- Job Information -->
+        <div class="card mb-4" th:if="${application.job != null}">
+            <div class="card-header bg-white">
+                <h4 class="mb-0">Applied For</h4>
+            </div>
+            <div class="card-body">
+                <h5 th:text="${application.job.title}">Job Title</h5>
+                <p class="text-muted mb-2">
+                    <span th:text="${application.job.location}">Location</span>
+                    <span th:if="${application.job.salary}" class="ms-3" th:text="${application.job.salary}">Salary</span>
+                </p>
+                <span th:switch="${application.job.jobType != null ? application.job.jobType.name() : 'UNKNOWN'}">
+                    <span th:case="'FULL_TIME'" class="badge bg-primary">Full Time</span>
+                    <span th:case="'PART_TIME'" class="badge bg-success">Part Time</span>
+                    <span th:case="'CONTRACT'" class="badge bg-warning">Contract</span>
+                    <span th:case="'INTERNSHIP'" class="badge bg-info">Internship</span>
+                    <span th:case="'REMOTE'" class="badge bg-secondary">Remote</span>
+                </span>
+            </div>
+        </div>
+        
+        <!-- Job Seeker Details -->
+        <div class="card mb-4" th:if="${application.applicant != null}">
+            <div class="card-header bg-white">
+                <h4 class="mb-0">Job Seeker Profile</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 th:text="${application.applicant.firstName + ' ' + application.applicant.lastName}">Applicant Name</h5>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p class="mb-2">
+                                    <strong><i class="fas fa-envelope me-2"></i>Email:</strong> 
+                                    <span th:text="${application.applicant.email}">email@example.com</span>
+                                </p>
+                                <p class="mb-2" th:if="${application.applicant.phone}">
+                                    <strong><i class="fas fa-phone me-2"></i>Phone:</strong> 
+                                    <span th:text="${application.applicant.phone}">Phone</span>
+                                </p>
+                                <p class="mb-2">
+                                    <strong><i class="fas fa-calendar me-2"></i>Applied On:</strong> 
+                                    <span th:text="${#temporals.format(application.createdAt, 'dd MMM yyyy HH:mm')}">Date</span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-2" th:if="${application.applicant.experience}">
+                                    <strong><i class="fas fa-briefcase me-2"></i>Experience:</strong> 
+                                    <span th:text="${application.applicant.experience}">Experience</span>
+                                </p>
+                                <p class="mb-2" th:if="${application.applicant.education}">
+                                    <strong><i class="fas fa-graduation-cap me-2"></i>Education:</strong> 
+                                    <span th:text="${application.applicant.education}">Education</span>
+                                </p>
+                                <p class="mb-2" th:if="${application.applicant.skills}">
+                                    <strong><i class="fas fa-tools me-2"></i>Skills:</strong> 
+                                    <span th:text="${application.applicant.skills}">Skills</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <img src="https://via.placeholder.com/120" alt="Profile Image" class="rounded-circle mb-3" width="120">
+                            <div class="mb-3">
+                                <span th:switch="${application.status != null ? application.status.name() : 'UNKNOWN'}">
+                                    <span th:case="'APPLIED'" class="badge bg-info fs-6">Applied</span>
+                                    <span th:case="'REVIEWING'" class="badge bg-primary fs-6">Reviewing</span>
+                                    <span th:case="'SHORTLISTED'" class="badge bg-warning fs-6">Shortlisted</span>
+                                    <span th:case="'INTERVIEWED'" class="badge bg-secondary fs-6">Interviewed</span>
+                                    <span th:case="'REJECTED'" class="badge bg-danger fs-6">Rejected</span>
+                                    <span th:case="'OFFERED'" class="badge bg-success fs-6">Offered</span>
+                                    <span th:case="'HIRED'" class="badge bg-success fs-6">Hired</span>
+                                </span>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a th:href="mailto:${application.applicant.email}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-envelope me-1"></i>Send Email
+                                </a>
+                                <a th:if="${application.applicant.phone}" th:href="tel:${application.applicant.phone}" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-phone me-1"></i>Call
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cover Letter -->
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h4 class="mb-0"><i class="fas fa-file-alt me-2"></i>Cover Letter</h4>
+            </div>
+            <div class="card-body">
+                <div class="bg-light p-3 rounded">
+                    <p th:if="${application.coverLetter != null and !application.coverLetter.trim().isEmpty()}" 
+                       th:text="${application.coverLetter}" 
+                       style="white-space: pre-wrap; margin-bottom: 0;">Cover letter content</p>
+                    <p th:unless="${application.coverLetter != null and !application.coverLetter.trim().isEmpty()}" 
+                       class="text-muted mb-0 fst-italic">No cover letter provided by the applicant</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Resume -->
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h4 class="mb-0"><i class="fas fa-file-pdf me-2"></i>Resume</h4>
+            </div>
+            <div class="card-body">
+                <div th:if="${application.resumePath != null and !application.resumePath.trim().isEmpty()}">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-2">Resume uploaded by the applicant</p>
+                            <small class="text-muted">File path: <span th:text="${application.resumePath}">path</span></small>
+                        </div>
+                        <div>
+                            <a th:href="@{/employer/resume/{id}(id=${application.id})}" 
+                               class="btn btn-primary" 
+                               target="_blank">
+                                <i class="fas fa-download me-1"></i>Download Resume
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div th:unless="${application.resumePath != null and !application.resumePath.trim().isEmpty()}" 
+                     class="text-center py-3">
+                    <i class="fas fa-file-pdf fa-2x text-muted mb-2"></i>
+                    <p class="text-muted mb-0 fst-italic">No resume uploaded by the applicant</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

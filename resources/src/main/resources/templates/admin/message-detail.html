@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Message Details - Admin</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Message Details</h2>
+            <a th:href="@{/admin/messages}" class="btn btn-outline-primary">Back to Messages</a>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0" th:text="${message.subject}">Subject</h5>
+                    <span class="badge" 
+                          th:style="${message.isRead} ? 'background-color: var(--success-color); color: white;' : 'background-color: var(--danger-color); color: white;'" 
+                          th:text="${message.isRead} ? 'Read' : 'Unread'">Status</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">From:</h6>
+                        <p class="mb-1" th:text="${message.name}">Name</p>
+                        <p class="text-muted" th:text="${message.email}">Email</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Date:</h6>
+                        <p th:text="${#temporals.format(message.createdAt, 'dd MMMM yyyy, HH:mm')}">Date</p>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="mb-4">
+                    <h6 class="text-muted">Message:</h6>
+                    <div class="bg-light p-3 rounded">
+                        <p th:text="${message.message}" style="white-space: pre-wrap;">Message content</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <form th:action="@{/admin/messages/{id}/delete(id=${message.id})}" 
+                          method="post" 
+                          style="display: inline;" 
+                          onclick="return confirm('Are you sure you want to delete this message?')">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="fas fa-trash me-1"></i>Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

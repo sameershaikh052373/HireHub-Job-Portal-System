@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Create Job Listing - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <h2 class="mb-4">Create New Job Listing</h2>
+                        
+                        <form th:action="@{/employer/jobs/create}" th:object="${job}" method="post" class="row g-3">
+                            <div class="col-md-12">
+                                <label for="title" class="form-label">Job Title</label>
+                                <input type="text" th:field="*{title}" class="form-control" id="title" required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" th:field="*{location}" class="form-control" id="location" required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></div>
+                                <div class="form-text">City, State or Remote</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="salary" class="form-label">Salary (Optional)</label>
+                                <input type="text" th:field="*{salary}" class="form-control" id="salary" placeholder="e.g., $50,000 - $70,000">
+                                <div class="form-text">Provide salary range or specific amount if applicable</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="jobType" class="form-label">Job Type</label>
+                                <select th:field="*{jobType}" class="form-select" id="jobType" required>
+                                    <option value="">Select Job Type</option>
+                                    <option th:value="FULL_TIME">Full Time</option>
+                                    <option th:value="PART_TIME">Part Time</option>
+                                    <option th:value="CONTRACT">Contract</option>
+                                    <option th:value="INTERNSHIP">Internship</option>
+                                    <option th:value="REMOTE">Remote</option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('jobType')}" th:errors="*{jobType}"></div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="expiresAt" class="form-label">Expiration Date</label>
+                                <input type="date" th:field="*{expiresAt}" class="form-control" id="expiresAt">
+                                <div class="form-text">When should this job listing expire? Leave blank for 30 days.</div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="description" class="form-label">Job Description</label>
+                                <textarea th:field="*{description}" class="form-control" id="description" rows="6" required></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                                <div class="form-text">Provide detailed information about the job responsibilities and role.</div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="requirements" class="form-label">Job Requirements</label>
+                                <textarea th:field="*{requirements}" class="form-control" id="requirements" rows="4"></textarea>
+                                <div class="form-text">List qualifications, skills, experience, and education required for this position.</div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="benefits" class="form-label">Benefits</label>
+                                <textarea th:field="*{benefits}" class="form-control" id="benefits" rows="3"></textarea>
+                                <div class="form-text">List the benefits, perks, or other advantages offered with this position.</div>
+                            </div>
+                            
+                            <div class="col-12 mt-4">
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <a th:href="@{/employer/jobs}" class="btn btn-outline-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Create Job Listing</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialVibe - Connect & Share</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-heart"></i>
+                <span>SocialVibe</span>
+            </div>
+            <div class="nav-search">
+                <input type="text" placeholder="Search friends..." id="searchInput">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active"><i class="fas fa-home"></i></a>
+                <a href="#stories" class="nav-link"><i class="fas fa-plus-circle"></i></a>
+                <a href="#chat" class="nav-link"><i class="fas fa-comments"></i></a>
+                <a href="#discover" class="nav-link"><i class="fas fa-compass"></i></a>
+                <a href="#profile" class="nav-link"><i class="fas fa-user"></i></a>
+                <div class="notification-badge" id="notificationBadge">3</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Home Feed -->
+        <section id="home" class="section active">
+            <div class="home-layout">
+                <!-- Stories Bar -->
+                <div class="stories-container">
+                    <div class="story-item add-story" onclick="addStory()">
+                        <div class="story-avatar">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <span>Your Story</span>
+                    </div>
+                    <div class="story-item">
+                        <img src="https://via.placeholder.com/60" alt="Story" class="story-avatar">
+                        <span>Priya</span>
+                    </div>
+                    <div class="story-item">
+                        <img src="https://via.placeholder.com/60" alt="Story" class="story-avatar">
+                        <span>Arjun</span>
+                    </div>
+                    <div class="story-item">
+                        <img src="https://via.placeholder.com/60" alt="Story" class="story-avatar">
+                        <span>Kavya</span>
+                    </div>
+                </div>
+
+                <!-- Post Creator -->
+                <div class="post-creator">
+                    <div class="mood-selector">
+                        <span>Mood:</span>
+                        <div class="mood-options">
+                            <button class="mood-btn active" data-mood="😊" onclick="selectMood('😊')">😊</button>
+                            <button class="mood-btn" data-mood="😎" onclick="selectMood('😎')">😎</button>
+                            <button class="mood-btn" data-mood="🚀" onclick="selectMood('🚀')">🚀</button>
+                            <button class="mood-btn" data-mood="❤️" onclick="selectMood('❤️')">❤️</button>
+                            <button class="mood-btn" data-mood="😴" onclick="selectMood('😴')">😴</button>
+                        </div>
+                    </div>
+                    <div class="post-input">
+                        <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic">
+                        <input type="text" placeholder="What's happening?" id="postInput">
+                        <div class="post-options">
+                            <button class="option-btn" onclick="addImage()"><i class="fas fa-image"></i></button>
+                            <button class="option-btn" onclick="addGif()"><i class="fas fa-smile"></i></button>
+                            <button class="post-btn" onclick="createPost()"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posts Feed -->
+                <div class="posts-feed" id="postsFeed"></div>
+            </div>
+        </section>
+
+        <!-- Stories Section -->
+        <section id="stories" class="section">
+            <div class="stories-page">
+                <h2>Create Your Story</h2>
+                <div class="story-creator">
+                    <div class="story-preview">
+                        <div class="story-canvas" id="storyCanvas">
+                            <p>Your story will appear here</p>
+                        </div>
+                    </div>
+                    <div class="story-tools">
+                        <input type="text" placeholder="Add text to your story..." id="storyText">
+                        <div class="story-filters">
+                            <button onclick="applyFilter('normal')">Normal</button>
+                            <button onclick="applyFilter('vintage')">Vintage</button>
+                            <button onclick="applyFilter('cool')">Cool</button>
+                        </div>
+                        <button class="share-story-btn" onclick="shareStory()">Share Story</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="section">
+            <div class="chat-layout">
+                <div class="chat-sidebar">
+                    <div class="chat-header">
+                        <h3>Messages</h3>
+                        <button class="new-chat-btn" onclick="newChat()"><i class="fas fa-edit"></i></button>
+                    </div>
+                    <div class="chat-list">
+                        <div class="chat-item active" onclick="selectChat('sarah')">
+                            <img src="https://via.placeholder.com/40" alt="Profile" class="chat-avatar">
+                            <div class="chat-info">
+                                <div class="chat-name">Priya Sharma</div>
+                                <div class="chat-preview">Hey! How are you? 😊</div>
+                            </div>
+                            <div class="chat-meta">
+                                <span class="chat-time">2m</span>
+                                <span class="unread-count">2</span>
+                            </div>
+                        </div>
+                        <div class="chat-item" onclick="selectChat('group')">
+                            <img src="https://via.placeholder.com/40" alt="Group" class="chat-avatar">
+                            <div class="chat-info">
+                                <div class="chat-name">Weekend Squad</div>
+                                <div class="chat-preview">Arjun: Anyone up for movies?</div>
+                            </div>
+                            <div class="chat-meta">
+                                <span class="chat-time">5m</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-main">
+                    <div class="chat-header">
+                        <div class="chat-user-info">
+                            <img src="https://via.placeholder.com/40" alt="Profile" class="chat-avatar">
+                            <div>
+                                <h3 id="chatTitle">Priya Sharma</h3>
+                                <span id="chatStatus">Online</span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button><i class="fas fa-phone"></i></button>
+                            <button><i class="fas fa-video"></i></button>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                        <span>Sarah is typing...</span>
+                    </div>
+                    <div class="chat-input">
+                        <button class="emoji-btn" onclick="toggleEmojiPicker()"><i class="fas fa-smile"></i></button>
+                        <input type="text" id="messageInput" placeholder="Type a message..." onkeypress="handleMessageKeyPress(event)" oninput="showTyping()">
+                        <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discover Section -->
+        <section id="discover" class="section">
+            <div class="discover-container">
+                <h2>Discover</h2>
+                <div class="discover-tabs">
+                    <button class="tab-btn active" onclick="showDiscoverTab('trending')">Trending</button>
+                    <button class="tab-btn" onclick="showDiscoverTab('people')">People</button>
+                    <button class="tab-btn" onclick="showDiscoverTab('confessions')">Confessions</button>
+                </div>
+                <div class="discover-content">
+                    <div id="trending" class="discover-tab active">
+                        <div class="trending-posts" id="trendingPosts"></div>
+                    </div>
+                    <div id="people" class="discover-tab">
+                        <div class="people-suggestions" id="peopleSuggestions"></div>
+                    </div>
+                    <div id="confessions" class="discover-tab">
+                        <div class="confession-creator">
+                            <textarea placeholder="Share an anonymous confession..." id="confessionInput"></textarea>
+                            <button onclick="postConfession()">Post Anonymously</button>
+                        </div>
+                        <div class="confessions-feed" id="confessionsFeed"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <img src="https://via.placeholder.com/120" alt="Profile" class="profile-avatar" id="profileAvatar">
+                    <div class="profile-info">
+                        <h2 id="profileName">Aditya Verma</h2>
+                        <p id="profileStatus">Living my best life! 😊</p>
+                        <p id="profileBio">Social media enthusiast | Coffee lover ☕</p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <span class="stat-number">42</span>
+                                <span class="stat-label">Posts</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">1.2K</span>
+                                <span class="stat-label">Followers</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">890</span>
+                                <span class="stat-label">Following</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-edit">
+                    <h3>Edit Profile</h3>
+                    <input type="text" id="editName" placeholder="Your Name">
+                    <input type="text" id="editStatus" placeholder="Your Status">
+                    <textarea id="editBio" placeholder="Tell us about yourself..."></textarea>
+                    <button onclick="updateProfile()">Update Profile</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Emoji Picker Modal -->
+    <div class="emoji-picker" id="emojiPicker" style="display: none;">
+        <div class="emoji-grid">
+            <span onclick="addEmoji('😀')">😀</span>
+            <span onclick="addEmoji('😂')">😂</span>
+            <span onclick="addEmoji('❤️')">❤️</span>
+            <span onclick="addEmoji('👍')">👍</span>
+            <span onclick="addEmoji('🔥')">🔥</span>
+            <span onclick="addEmoji('💯')">💯</span>
+            <span onclick="addEmoji('🎉')">🎉</span>
+            <span onclick="addEmoji('😍')">😍</span>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>

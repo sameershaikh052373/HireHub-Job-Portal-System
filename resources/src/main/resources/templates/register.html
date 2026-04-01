@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Register - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="text-center mb-5">
+            <h2>Create an Account</h2>
+            <p class="lead">Choose the account type that's right for you</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow">
+                    <div class="card-body p-4">
+                        <h3 class="card-title text-center mb-4">Job Seeker</h3>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Create a professional profile
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Apply to thousands of jobs
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Track your applications
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Get discovered by employers
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Receive job recommendations
+                            </li>
+                        </ul>
+                        <div class="d-grid">
+                            <a th:href="@{/register/jobseeker}" class="btn btn-primary btn-lg">Register as Job Seeker</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow">
+                    <div class="card-body p-4">
+                        <h3 class="card-title text-center mb-4">Employer</h3>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Create a company profile
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Post unlimited job listings
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Search for qualified candidates
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Manage applications efficiently
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Analytics and reporting tools
+                            </li>
+                        </ul>
+                        <div class="d-grid">
+                            <a th:href="@{/register/employer}" class="btn btn-outline-primary btn-lg">Register as Employer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-3">
+            <p>Already have an account? <a th:href="@{/login}">Sign In</a></p>
+        </div>
+    </div>
+</body>
+</html>

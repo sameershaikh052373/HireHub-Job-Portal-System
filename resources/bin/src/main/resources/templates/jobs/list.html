@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Browse Jobs - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <h2 class="mb-4">Browse All Jobs</h2>
+        
+        <!-- Search and Filters Section -->
+        <div class="search-box mb-4">
+            <form id="job-search-form" th:action="@{/jobs/search}" method="get" class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" name="keyword" id="keyword" class="form-control" placeholder="Job title, keywords or company" th:value="${param.keyword}">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="location" id="location" class="form-control" placeholder="City, state or zip code" th:value="${param.location}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+                <div class="col-md-2">
+                    <a th:href="@{/jobs}" class="btn btn-outline-secondary w-100">Reset</a>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Filters -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-2">
+                <select id="jobTypeFilter" class="form-select" onchange="filterJobs()">
+                    <option value="all">All Job Types</option>
+                    <option value="FULL_TIME">Full Time</option>
+                    <option value="PART_TIME">Part Time</option>
+                    <option value="CONTRACT">Contract</option>
+                    <option value="INTERNSHIP">Internship</option>
+                    <option value="REMOTE">Remote</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <input type="text" id="locationFilter" class="form-control" placeholder="Filter by location" onkeyup="filterJobs()">
+            </div>
+            <div class="col-md-3 mb-2">
+                <select id="salaryFilter" class="form-select" onchange="filterJobs()">
+                    <option value="">Any Salary</option>
+                    <option value="30000">$30,000+</option>
+                    <option value="50000">$50,000+</option>
+                    <option value="70000">$70,000+</option>
+                    <option value="100000">$100,000+</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <select id="sortBy" class="form-select">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="relevance">Relevance</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Jobs List -->
+        <div class="row">
+            <div class="col-12" th:if="${#lists.isEmpty(jobs)}">
+                <div class="alert alert-info text-center">
+                    No jobs found matching your criteria. Try adjusting your search parameters.
+                </div>
+            </div>
+            
+            <div class="col-12" th:each="job : ${jobs}">
+                <div class="job-card card mb-3" th:data-job-type="${job.jobType}" 
+                     th:data-location="${job.location}" th:data-salary="${job.salary != null ? job.salary.replaceAll('[^0-9]', '') : '0'}">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h5 class="card-title">
+                                    <a th:href="@{/jobs/{id}(id=${job.id})}" th:text="${job.title}">Job Title</a>
+                                </h5>
+                                <div class="company-info">
+                                    <img class="company-logo" th:if="${job.employer.companyLogo}" 
+                                        th:src="${job.employer.companyLogo}" alt="Company Logo">
+                                    <div>
+                                        <div th:text="${job.employer.companyName}">Company Name</div>
+                                        <div class="location">
+                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                            <span th:text="${job.location}">Location</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <span th:switch="${job.jobType.name()}">
+                                        <span th:case="'FULL_TIME'" class="badge bg-primary">Full Time</span>
+                                        <span th:case="'PART_TIME'" class="badge bg-success">Part Time</span>
+                                        <span th:case="'CONTRACT'" class="badge bg-warning">Contract</span>
+                                        <span th:case="'INTERNSHIP'" class="badge bg-info">Internship</span>
+                                        <span th:case="'REMOTE'" class="badge bg-secondary">Remote</span>
+                                    </span>
+                                    <span class="salary" th:if="${job.salary}">
+                                        <i class="fas fa-money-bill-wave ms-2 me-1"></i>
+                                        <span th:text="${job.salary}">Salary</span>
+                                    </span>
+                                </div>
+                                <p class="card-text" th:text="${#strings.abbreviate(job.description, 200)}">Description</p>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <small class="text-muted d-block mb-2">
+                                    <i class="far fa-clock me-1"></i>
+                                    Posted <span th:text="${#temporals.format(job.createdAt, 'dd MMM yyyy')}">Date</span>
+                                </small>
+                                <a th:href="@{/jobs/{id}(id=${job.id})}" class="btn btn-outline-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- No Results Message (hidden by default) -->
+        <div id="no-results-message" class="alert alert-warning text-center" style="display: none;">
+            No jobs match your filter criteria. Try adjusting your filters.
+        </div>
+        
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center" th:if="${totalPages > 1}">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/jobs(page=${currentPage - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+                        th:classappend="${currentPage == i ? 'active' : ''}">
+                        <a class="page-link" th:href="@{/jobs(page=${i})}" th:text="${i + 1}"></a>
+                    </li>
+                    
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/jobs(page=${currentPage + 1})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>

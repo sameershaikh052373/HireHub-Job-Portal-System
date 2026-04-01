@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Job Details - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Job Details -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="mb-0" th:text="${job.title}">Job Title</h2>
+                            <span th:switch="${job.jobType.name()}">
+                                <span th:case="'FULL_TIME'" class="badge bg-primary">Full Time</span>
+                                <span th:case="'PART_TIME'" class="badge bg-success">Part Time</span>
+                                <span th:case="'CONTRACT'" class="badge bg-warning">Contract</span>
+                                <span th:case="'INTERNSHIP'" class="badge bg-info">Internship</span>
+                                <span th:case="'REMOTE'" class="badge bg-secondary">Remote</span>
+                            </span>
+                        </div>
+                        <p class="mb-0 mt-2">
+                            <i class="fas fa-building me-1"></i> <span th:text="${job.employer.companyName}">Company Name</span> |
+                            <i class="fas fa-map-marker-alt me-1"></i> <span th:text="${job.location}">Location</span>
+                            <span class="ms-2" th:if="${job.salary}">
+                                <i class="fas fa-money-bill-wave me-1"></i> <span th:text="${job.salary}">Salary</span>
+                            </span>
+                        </p>
+                        <p class="text-muted mb-0">
+                            <small>
+                                <i class="far fa-clock me-1"></i> Posted <span th:text="${#temporals.format(job.createdAt, 'dd MMM yyyy')}">Date</span>
+                            </small>
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <h5>Job Description</h5>
+                        <p th:utext="${#strings.replace(#strings.escapeXml(job.description), '&#10;', '&lt;br&gt;')}">Job description goes here</p>
+                        
+                        <h5 class="mt-4">Requirements</h5>
+                        <p th:utext="${#strings.replace(#strings.escapeXml(job.requirements), '&#10;', '&lt;br&gt;')}">Job requirements go here</p>
+                        
+                        <h5 class="mt-4">Benefits</h5>
+                        <p th:utext="${#strings.replace(#strings.escapeXml(job.benefits), '&#10;', '&lt;br&gt;')}">Job benefits go here</p>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+                            <a th:href="@{/jobs/{id}/apply(id=${job.id})}" class="btn btn-primary" 
+                               sec:authorize="isAuthenticated() and hasRole('USER')"
+                               th:if="${job.status.name() == 'ACTIVE' and !hasApplied}">
+                                Apply Now
+                            </a>
+                            <span class="btn btn-success disabled" th:if="${hasApplied}">
+                                <i class="fas fa-check me-1"></i> Already Applied
+                            </span>
+                            <span class="btn btn-secondary disabled" 
+                                  th:if="${job.status.name() != 'ACTIVE' and !isOwner}">
+                                Job Closed
+                            </span>
+                            <a th:href="@{/login}" class="btn btn-outline-primary" sec:authorize="isAnonymous()">
+                                Sign In to Apply
+                            </a>
+                            <a th:href="@{/employer/jobs/{id}/edit(id=${job.id})}" class="btn btn-outline-primary me-2"
+                               sec:authorize="hasRole('EMPLOYER')" th:if="${isOwner}">
+                                Edit Job
+                            </a>
+                            <a th:href="@{/employer/jobs/{id}/applications(id=${job.id})}" class="btn btn-outline-secondary"
+                               sec:authorize="hasRole('EMPLOYER')" th:if="${isOwner}">
+                                View Applications
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Similar Jobs -->
+                <h4>Similar Jobs</h4>
+                <div class="list-group mb-4">
+                    <!-- This would be populated with similar jobs based on title, skills, or location -->
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Similar Job Title</h5>
+                            <small>3 days ago</small>
+                        </div>
+                        <p class="mb-1">Brief job description goes here.</p>
+                        <small>Company Name - Location</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Another Related Job</h5>
+                            <small>1 week ago</small>
+                        </div>
+                        <p class="mb-1">Brief job description goes here.</p>
+                        <small>Company Name - Location</small>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <!-- Company Info -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Company Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <img th:if="${job.employer.companyLogo}" th:src="${job.employer.companyLogo}" 
+                                 alt="Company Logo" class="img-fluid" style="max-height: 100px;">
+                            <h5 class="mt-3" th:text="${job.employer.companyName}">Company Name</h5>
+                        </div>
+                        <p th:text="${job.employer.companyDescription}">Company description</p>
+                        <p th:if="${job.employer.industry}">
+                            <strong>Industry:</strong> <span th:text="${job.employer.industry}">Industry</span>
+                        </p>
+                        <p th:if="${job.employer.companyWebsite}">
+                            <strong>Website:</strong> 
+                            <a th:href="${job.employer.companyWebsite}" target="_blank" rel="noopener noreferrer" 
+                               th:text="${job.employer.companyWebsite}">Website</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Job Summary -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Job Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                <strong>Location:</strong> <span th:text="${job.location}">Location</span>
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-briefcase me-2"></i>
+                                <strong>Job Type:</strong> 
+                                <span th:switch="${job.jobType.name()}">
+                                    <span th:case="'FULL_TIME'">Full Time</span>
+                                    <span th:case="'PART_TIME'">Part Time</span>
+                                    <span th:case="'CONTRACT'">Contract</span>
+                                    <span th:case="'INTERNSHIP'">Internship</span>
+                                    <span th:case="'REMOTE'">Remote</span>
+                                </span>
+                            </li>
+                            <li class="mb-2" th:if="${job.salary}">
+                                <i class="fas fa-money-bill-wave me-2"></i>
+                                <strong>Salary:</strong> <span th:text="${job.salary}">Salary</span>
+                            </li>
+                            <li class="mb-2">
+                                <i class="far fa-calendar-alt me-2"></i>
+                                <strong>Posted On:</strong> 
+                                <span th:text="${#temporals.format(job.createdAt, 'dd MMM yyyy')}">Date</span>
+                            </li>
+                            <li th:if="${job.expiresAt}">
+                                <i class="fas fa-calendar-times me-2"></i>
+                                <strong>Expires On:</strong> 
+                                <span th:text="${#temporals.format(job.expiresAt, 'dd MMM yyyy')}">Date</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Share Job -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Share This Job</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center">
+                            <a href="#" class="btn btn-outline-primary me-2" title="Share on Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-info me-2" title="Share on Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary me-2" title="Share on LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-success" title="Share via Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

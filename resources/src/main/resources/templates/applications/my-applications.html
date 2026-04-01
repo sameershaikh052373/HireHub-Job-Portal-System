@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>My Applications - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <h2 class="mb-4">My Applications</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <div th:if="${applications == null or #lists.isEmpty(applications)}" class="text-center py-4">
+                    <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                    <p>You haven't applied to any jobs yet.</p>
+                    <a th:href="@{/jobs}" class="btn btn-primary">Browse Jobs</a>
+                </div>
+                
+                <div th:unless="${applications == null or #lists.isEmpty(applications)}" class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Applied On</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="app : ${applications}">
+                                <td>
+                                    <a th:href="@{/jobs/{id}(id=${app.job.id})}" th:text="${app.job.title}">Job Title</a>
+                                </td>
+                                <td th:text="${app.job.employer.companyName ?: 'N/A'}">Company Name</td>
+                                <td th:text="${#temporals.format(app.createdAt, 'dd MMM yyyy')}">Date</td>
+                                <td>
+                                    <span th:switch="${app.status.name()}">
+                                        <span th:case="'APPLIED'" class="badge status-applied">Applied</span>
+                                        <span th:case="'REVIEWING'" class="badge status-reviewing">Reviewing</span>
+                                        <span th:case="'SHORTLISTED'" class="badge status-shortlisted">Shortlisted</span>
+                                        <span th:case="'INTERVIEWED'" class="badge status-interviewed">Interviewed</span>
+                                        <span th:case="'REJECTED'" class="badge status-rejected">Rejected</span>
+                                        <span th:case="'OFFERED'" class="badge status-offered">Offered</span>
+                                        <span th:case="'HIRED'" class="badge status-hired">Hired</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/jobs/{id}(id=${app.job.id})}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i> View Job
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Application Tips -->
+        <div class="card mt-4">
+            <div class="card-header bg-white">
+                <h4 class="mb-0">Tips for Job Applications</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <h5><i class="fas fa-file-lines me-2 text-primary"></i> Resume Tips</h5>
+                            <ul>
+                                <li>Keep your resume updated</li>
+                                <li>Tailor it to each job application</li>
+                                <li>Highlight relevant skills and experience</li>
+                                <li>Proofread for errors</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <h5><i class="fas fa-envelope-open-text me-2 text-primary"></i> Cover Letter Tips</h5>
+                            <ul>
+                                <li>Address the hiring manager by name if possible</li>
+                                <li>Show how your skills match the job requirements</li>
+                                <li>Be concise but comprehensive</li>
+                                <li>Express enthusiasm for the role</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <h5><i class="fas fa-comment-dots me-2 text-primary"></i> Interview Tips</h5>
+                            <ul>
+                                <li>Research the company beforehand</li>
+                                <li>Practice common interview questions</li>
+                                <li>Prepare questions to ask the interviewer</li>
+                                <li>Follow up with a thank-you note</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

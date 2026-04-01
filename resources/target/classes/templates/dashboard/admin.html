@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Admin Dashboard - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <h2>Admin Dashboard</h2>
+        
+        <!-- Stats Cards -->
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="dashboard-card dashboard-card-primary">
+                    <h3>Total Users</h3>
+                    <p th:text="${totalUsers}">0</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card dashboard-card-success">
+                    <h3>Job Seekers</h3>
+                    <p th:text="${jobSeekersCount}">0</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card dashboard-card-warning">
+                    <h3>Employers</h3>
+                    <p th:text="${employersCount}">0</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="dashboard-card dashboard-card-danger">
+                    <h3>Active Jobs</h3>
+                    <p th:text="${activeJobsCount}">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Cards -->
+        <div class="row mt-4">
+            <!-- User Management Card -->
+            <div class="col-md-4">
+                <a th:href="@{/admin/users}" class="text-decoration-none">
+                    <div class="card h-100" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-users-cog fa-2x me-3" style="color: var(--primary-color);"></i>
+                                <div>
+                                    <h5 class="mb-1">User Management</h5>
+                                    <p class="text-muted mb-0">Manage user accounts and permissions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Jobs Management Card -->
+            <div class="col-md-4">
+                <a th:href="@{/admin/jobs}" class="text-decoration-none">
+                    <div class="card h-100" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-briefcase fa-2x me-3" style="color: var(--secondary-color);"></i>
+                                <div>
+                                    <h5 class="mb-1">Jobs Management</h5>
+                                    <p class="text-muted mb-0">Monitor and manage job postings</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Messages Management Card -->
+            <div class="col-md-4">
+                <a th:href="@{/admin/messages}" class="text-decoration-none">
+                    <div class="card h-100" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-envelope fa-2x me-3" style="color: var(--accent-color);"></i>
+                                <div>
+                                    <h5 class="mb-1">Contact Messages</h5>
+                                    <p class="text-muted mb-0">View user contact messages</p>
+                                </div>
+                            </div>
+                            <div class="text-center" th:if="${unreadMessages > 0}">
+                                <span class="badge" style="background-color: var(--danger-color); color: white;" th:text="${unreadMessages} + ' unread'">0 unread</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clock me-2"></i>System Overview
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Platform Statistics</h6>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-circle text-success me-2" style="font-size: 0.5rem;"></i>
+                                        System Status: <span class="text-success">Online</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-circle text-primary me-2" style="font-size: 0.5rem;"></i>
+                                        User Registration: <span class="text-primary">Active</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-circle text-info me-2" style="font-size: 0.5rem;"></i>
+                                        Job Posting: <span class="text-info">Available</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

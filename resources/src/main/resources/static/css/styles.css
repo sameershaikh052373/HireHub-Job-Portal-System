@@ -1,0 +1,721 @@
+/* Main Styles */
+:root {
+    --primary-color: #2E3A8C;
+    --secondary-color: #6c63ff;
+    --accent-color: #388E3C;
+    --success-color: #388E3C;
+    --danger-color: #E53E3E;
+    --light-color: #f5f6fa;
+    --dark-color: #222;
+    --text-color: #222;
+    --light-text-color: #555;
+    --border-color: #E0E0E0;
+    --gradient-primary: linear-gradient(135deg, #2E3A8C 0%, #6c63ff 100%);
+    --gradient-secondary: linear-gradient(135deg, #eef0f8 0%, #dde1f0 100%);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Navigation */
+.navbar {
+    box-shadow: 0 2px 20px rgba(31, 41, 55, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.navbar .container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.navbar-nav.me-auto {
+    margin-left: -15px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-1px);
+}
+
+.navbar-dark.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+/* Hero Section - Purple Theme */
+.hero-section {
+    background: var(--gradient-secondary);
+    padding: 80px 0;
+    color: var(--text-color);
+    text-align: center;
+    width: 100%;
+    margin: 0;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 15px;
+}
+
+/* Job Cards */
+.job-card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(31, 41, 55, 0.15);
+    border-color: var(--primary-color);
+}
+
+.job-card .card-body {
+    padding: 1.5rem;
+}
+
+.job-card .badge {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    margin-right: 5px;
+}
+
+.job-card .card-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.job-card .company-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.job-card .company-logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+    object-fit: contain;
+}
+
+.job-card .location {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.job-card .salary {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Forms */
+.form-control {
+    border-radius: 8px;
+    border: 1.5px solid var(--border-color);
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(31, 41, 55, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Clean Button Styling - Flipkart Theme */
+.btn {
+    border-radius: 4px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: all 0.15s ease;
+    border: 1px solid;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background-color: #1E2A6B;
+    border-color: #1E2A6B;
+    color: white !important;
+}
+
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color) !important;
+    background-color: white;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white !important;
+}
+
+.btn-secondary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white !important;
+}
+
+.btn-secondary:hover {
+    background-color: #5A52E6;
+    border-color: #5A52E6;
+    color: white !important;
+}
+
+.btn-outline-secondary {
+    border-color: var(--primary-color);
+    color: var(--primary-color) !important;
+    background-color: white;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white !important;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: white !important;
+}
+
+.btn-success:hover {
+    background-color: #2E7D32;
+    border-color: #2E7D32;
+    color: white !important;
+}
+
+.btn-warning {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white !important;
+}
+
+.btn-warning:hover {
+    background-color: #1E2A6B;
+    border-color: #1E2A6B;
+    color: white !important;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    color: white !important;
+}
+
+.btn-danger:hover {
+    background-color: #C53030;
+    border-color: #C53030;
+    color: white !important;
+}
+
+.btn-info {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white !important;
+}
+
+.btn-info:hover {
+    background-color: #1E2A6B;
+    border-color: #1E2A6B;
+    color: white !important;
+}
+
+.btn-outline-info {
+    border-color: var(--primary-color);
+    color: var(--primary-color) !important;
+    background-color: white;
+}
+
+.btn-outline-info:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white !important;
+}
+
+/* Ensure all button text is white on hover */
+.btn:hover,
+.btn:hover *,
+.btn:hover i,
+.btn:hover span {
+    color: white !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:hover *,
+.btn-outline-primary:hover i,
+.btn-outline-primary:hover span {
+    color: white !important;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:hover *,
+.btn-outline-secondary:hover i,
+.btn-outline-secondary:hover span {
+    color: white !important;
+}
+
+.btn-outline-info:hover,
+.btn-outline-info:hover *,
+.btn-outline-info:hover i,
+.btn-outline-info:hover span {
+    color: white !important;
+}
+
+/* Badge theme colors */
+.badge.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.badge.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.badge.bg-success {
+    background-color: var(--success-color) !important;
+}
+
+.badge.bg-warning {
+    background-color: var(--primary-color) !important;
+}
+
+.badge.bg-danger {
+    background-color: var(--danger-color) !important;
+}
+
+/* Flipkart-style comprehensive theming */
+/* All buttons use Flipkart colors */
+
+
+/* Navigation and header styling */
+.navbar-dark.bg-primary {
+    background: var(--gradient-primary) !important;
+}
+
+/* Form controls */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(40, 116, 240, 0.15);
+}
+
+/* Links */
+a {
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+/* Alert styling */
+.alert-primary {
+    background-color: rgba(40, 116, 240, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.alert-warning {
+    background-color: rgba(251, 100, 27, 0.1);
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+/* Table styling */
+.table-primary {
+    background-color: rgba(40, 116, 240, 0.1);
+}
+
+/* Pagination */
+.pagination .page-link {
+    color: var(--primary-color);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Progress bars */
+.progress-bar {
+    background-color: var(--primary-color);
+}
+
+/* Dropdown */
+.dropdown-item:hover {
+    background-color: rgba(40, 116, 240, 0.1);
+    color: var(--primary-color);
+}
+
+/* Text colors */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+/* Background colors */
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+/* Card Enhancements - Apple Style */
+.card {
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Badge Enhancements */
+.badge {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 6px 12px;
+}
+
+/* Alert Enhancements */
+.alert {
+    border-radius: 10px;
+    border: none;
+    font-weight: 500;
+}
+
+/* Job Title Links */
+.job-card .card-title a,
+.fw-semibold {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.job-card .card-title a:hover,
+.fw-semibold:hover {
+    color: var(--primary-color);
+}
+
+/* Pagination */
+.pagination .page-link {
+    color: var(--primary-color);
+    border-color: var(--border-color);
+    text-decoration: none;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: white;
+}
+
+/* Profile Images */
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+}
+
+.profile-image-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--border-color);
+}
+
+.default-avatar {
+    background-color: var(--secondary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    border-radius: 50%;
+}
+
+/* Unified Badge System - Only 3 colors */
+.badge {
+    font-weight: 500;
+}
+
+/* Job Type Badges - All use primary dark theme */
+.job-type-full-time,
+.job-type-part-time,
+.job-type-contract,
+.job-type-internship,
+.job-type-remote {
+    background-color: var(--primary-color) !important;
+    color: white;
+}
+
+/* Application Status - Only 3 states */
+.status-applied,
+.status-reviewing,
+.status-interviewed {
+    background-color: var(--secondary-color) !important;
+    color: white;
+}
+
+.status-shortlisted,
+.status-offered,
+.status-hired {
+    background-color: var(--success-color) !important;
+    color: white;
+}
+
+.status-rejected {
+    background-color: var(--danger-color) !important;
+    color: white;
+}
+
+/* Job Status - Simple 3 color system */
+.job-status-active {
+    background-color: #059669 !important;
+    color: white;
+}
+
+.job-status-closed {
+    background-color: #dc2626 !important;
+    color: white;
+}
+
+.job-status-draft {
+    background-color: var(--primary-color) !important;
+    color: white;
+}
+
+/* Search Box */
+.search-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(31, 41, 55, 0.1);
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+
+/* Dashboard */
+.dashboard-card {
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.dashboard-card p {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.dashboard-card-primary,
+.dashboard-card-success,
+.dashboard-card-warning,
+.dashboard-card-danger {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.dashboard-card-primary p,
+.dashboard-card-success p,
+.dashboard-card-warning p,
+.dashboard-card-danger p {
+    color: white;
+}
+
+/* Card Primary Theme */
+.card-primary {
+    background: var(--gradient-primary);
+    color: white;
+    border: 1px solid var(--primary-color);
+}
+
+.card-primary .card-header {
+    color: white !important;
+}
+
+.card-primary .card-header * {
+    color: white !important;
+}
+
+.card-primary .card-body {
+    color: white;
+}
+
+.card-primary .card-body * {
+    color: white !important;
+}
+
+.card-primary .table {
+    color: white;
+    background: transparent;
+}
+
+.card-primary .table td, .card-primary .table th {
+    color: white;
+    border-color: rgba(255,255,255,0.2);
+    background: transparent;
+}
+
+.card-primary .table-light {
+    background: rgba(255,255,255,0.1) !important;
+}
+
+.card-primary .table-light th {
+    background: rgba(255,255,255,0.1) !important;
+    color: white;
+}
+
+.card-primary .badge {
+    background-color: rgba(255,255,255,0.2) !important;
+    color: white !important;
+}
+
+.card-primary.job-card {
+    color: white;
+}
+
+.card-primary.job-card * {
+    color: white !important;
+}
+
+.card-primary.job-card .badge {
+    background-color: rgba(255,255,255,0.2) !important;
+    color: white !important;
+}
+
+.card-primary.job-card a {
+    color: white !important;
+}
+
+.card-primary.job-card a:hover {
+    color: rgba(255,255,255,0.8) !important;
+}
+
+/* Job title links throughout the project */
+.fw-semibold,
+.job-card .card-title a,
+.card-title a,
+table a,
+.table a {
+    color: var(--primary-color) !important;
+    text-decoration: none !important;
+    font-weight: 600;
+}
+
+.fw-semibold:hover,
+.job-card .card-title a:hover,
+.card-title a:hover,
+table a:hover,
+.table a:hover {
+    color: var(--secondary-color) !important;
+    text-decoration: none !important;
+}
+
+/* Specific job title styling */
+a[href*="/jobs/"] {
+    color: var(--primary-color) !important;
+    text-decoration: none !important;
+    font-weight: 600;
+}
+
+a[href*="/jobs/"]:hover {
+    color: var(--secondary-color) !important;
+    text-decoration: none !important;
+}
+
+/* Profile */
+.profile-header {
+    background-color: var(--light-color);
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+footer .social-icons a {
+    font-size: 1.2rem;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: var(--secondary-color) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 0;
+    }
+    
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+}

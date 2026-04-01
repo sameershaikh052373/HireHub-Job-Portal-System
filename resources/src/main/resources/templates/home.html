@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: html(content=~{::content})}">
+<head>
+    <title>Home - Job Portal</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="display-4">Find Your Dream Job</h1>
+                <p class="lead mb-4">Browse thousands of job listings and find the perfect match for your career.</p>
+                
+                <!-- Search Form -->
+                <div class="search-box">
+                    <form id="job-search-form" th:action="@{/jobs/search}" method="get" class="row g-3">
+                        <div class="col-md-5">
+                            <input type="text" name="keyword" id="keyword" class="form-control form-control-lg" placeholder="Job title">
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" name="location" id="location" class="form-control form-control-lg" placeholder="City">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary btn-lg w-100">Search</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="mt-4">
+                    <a th:href="@{/jobs}" class="btn btn-primary me-3">Browse All Jobs</a>
+                    <a th:href="@{/register}" class="btn btn-outline-primary" sec:authorize="isAnonymous()">Create Account</a>
+                    <a th:href="@{/dashboard}" class="btn btn-outline-primary" sec:authorize="isAuthenticated()">Go to Dashboard</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Latest Jobs Section -->
+        <section class="my-5">
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <h2>Latest Job Openings</h2>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a th:href="@{/jobs}" class="btn btn-outline-primary">View All Jobs</a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4" th:each="job : ${latestJobs}">
+                    <div class="card job-card h-100">
+                        <div class="card-body">
+                            <div class="company-info mb-3">
+                                <img class="company-logo" th:if="${job.employer.companyLogo}" 
+                                     th:src="${job.employer.companyLogo}" alt="Company Logo">
+                                <div>
+                                    <div class="fw-bold" th:text="${job.employer.companyName}">Company Name</div>
+                                    <div class="location">
+                                        <i class="fas fa-location-dot me-1"></i>
+                                        <span th:text="${job.location}">Location</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <h5 class="card-title">
+                                <a th:href="@{/jobs/{id}(id=${job.id})}" th:text="${job.title}">Job Title</a>
+                            </h5>
+                            <div class="mb-3">
+                                <span th:switch="${job.jobType.name()}">
+                                    <span th:case="'FULL_TIME'" class="badge job-type-full-time">Full Time</span>
+                                    <span th:case="'PART_TIME'" class="badge job-type-part-time">Part Time</span>
+                                    <span th:case="'CONTRACT'" class="badge job-type-contract">Contract</span>
+                                    <span th:case="'INTERNSHIP'" class="badge job-type-internship">Internship</span>
+                                    <span th:case="'REMOTE'" class="badge job-type-remote">Remote</span>
+                                </span>
+                                <span class="salary" th:if="${job.salary}">
+                                    <i class="fas fa-wallet ms-2 me-1"></i>
+                                    <span th:text="${job.salary}">Salary</span>
+                                </span>
+                            </div>
+                            <p class="card-text" th:text="${#strings.abbreviate(job.description, 150)}">Description</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-days me-1"></i>
+                                Posted <span th:text="${#temporals.format(job.createdAt, 'dd MMM yyyy')}">Date</span>
+                            </small>
+                            <a th:href="@{/jobs/{id}(id=${job.id})}" class="btn btn-sm btn-outline-primary float-end">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="my-5 py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5">Why Choose Our Job Portal?</h2>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="text-center">
+                            <i class="fas fa-magnifying-glass fa-3x mb-3 text-primary"></i>
+                            <h4>Easy Job Search</h4>
+                            <p>Our advanced search algorithm helps you find the most relevant job opportunities.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="text-center">
+                            <i class="fas fa-building-user fa-3x mb-3 text-primary"></i>
+                            <h4>Top Companies</h4>
+                            <p>Connect with industry-leading companies looking for talented professionals.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-chart-line fa-3x mb-3 text-primary"></i>
+                            <h4>Career Growth</h4>
+                            <p>Find opportunities that match your skills and help you advance in your career.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Call to Action -->
+        <section class="my-5 text-center">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <h2>Ready to take the next step in your career?</h2>
+                    <p class="lead mb-4">Join thousands of job seekers who have found their dream jobs through our portal.</p>
+                    <div>
+                        <a th:href="@{/register/jobseeker}" class="btn btn-primary btn-lg me-3" sec:authorize="isAnonymous()">Sign Up as Job Seeker</a>
+                        <a th:href="@{/register/employer}" class="btn btn-outline-primary btn-lg" sec:authorize="isAnonymous()">Register as Employer</a>
+                        <a th:href="@{/jobs}" class="btn btn-primary btn-lg" sec:authorize="isAuthenticated()">Browse Jobs Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

@@ -75,7 +75,7 @@ Entities Used:
 ![Apply](apply.png)
 
 ### ⚙ Admin Dashboard
-![Admin](admin dashboard.png)
+![Admin](admin.png)
 
 ---
 
